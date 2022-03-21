@@ -15,7 +15,8 @@ async def scan_for_targets():
 
     try:
         infcs = [a['interface'] for a in await airmon.interfaces]
-    except:
+    except Exception as e:
+        print(e)
         print("Are you running root?")
         exit(0)
 
