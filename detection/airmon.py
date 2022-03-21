@@ -1,6 +1,7 @@
 import asyncio
 
 import pyrcrack
+
 from rich.console import Console
 from rich.prompt import Prompt
 
@@ -12,11 +13,15 @@ async def scan_for_targets():
     console.show_cursor(False)
     airmon = pyrcrack.AirmonNg()
 
-    infl = [a for a in await airmon.interfaces ]
-    print(infl)
-    # interface = Prompt.ask(
-    #     'Select an interface',
-    #     choices=[a['interface'] )
+    try:
+        infcs = [a['interface'] for a in await airmon.interfaces]
+    except:
+        print("Are you running root?")
+        exit(0)
+
+    interface = Prompt.ask(
+        'Select an interface',
+        choices=infcs)
 
     async with airmon(interface) as mon:
         async with pyrcrack.AirodumpNg() as pdump:
